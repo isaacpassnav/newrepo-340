@@ -1,30 +1,41 @@
-/* ******************************************
- * This server.js file is the primary file of the 
- * application. It is used to control the project.
- *******************************************/
-/* ***********************
- * Require Statements
- *************************/
-const express = require("express")
-const env = require("dotenv").config()
-const app = express()
-const static = require("./routes/static")
+const express = require("express");
+const env = require("dotenv").config();
+const expressLayouts = require("express-ejs-layouts");
+const staticRoutes = require("./routes/static");
+const homeRoutes = require("./routes/home");
+const pool = require("./database/db");
 
-/* ***********************
+const app = express();
+
+/* ***************
+ * View Engine Setup
+ *****************/
+app.set("view engine", "ejs");
+app.set("views", __dirname + "/views");
+
+//  layouts globalmente
+app.use(expressLayouts);
+app.set("layout", "./layouts/main");
+
+/* ***************
  * Routes
- *************************/
-app.use(static)
+ *****************/
+app.use(staticRoutes);
+app.use("/", homeRoutes);
 
-/* ***********************
- * Local Server Information
- * Values from .env (environment) file
- *************************/
-const port = process.env.PORT
-const host = process.env.HOST
+const port = process.env.PORT || 3000;
+const host = process.env.HOST || "localhost";
 
-/* ***********************
- * Log statement to confirm server operation
- *************************/
+async function testDB() {
+  try {
+    const result = await pool.query("SELECT NOW()");
+    console.log("🟢 Database connection successful");
+  } catch (err) {
+    console.log("🔴 Database connection failed", err);
+  }
+}
+testDB();
+
 app.listen(port, () => {
-  console.log(`app listening on ${host}:${port}`)
-})
+  console.log(`✅ app listening on ${host}:${port}`);
+});
