@@ -4,7 +4,6 @@ const expressLayouts = require("express-ejs-layouts");
 const staticRoutes = require("./routes/static");
 const homeRoutes = require("./routes/home");
 const pool = require("./database/db");
-
 const app = express();
 
 /* ***************
@@ -12,15 +11,17 @@ const app = express();
  *****************/
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
-
-//  layouts globalmente
 app.use(expressLayouts);
 app.set("layout", "./layouts/main");
 
 /* ***************
- * Routes
+ * Static Files (ANTES de las rutas)
  *****************/
 app.use(staticRoutes);
+
+/* ***************
+ * Routes
+ *****************/
 app.use("/", homeRoutes);
 
 const port = process.env.PORT || 3000;
@@ -29,11 +30,12 @@ const host = process.env.HOST || "localhost";
 async function testDB() {
   try {
     const result = await pool.query("SELECT NOW()");
-    console.log("🟢 Database connection successful");
+    console.log("✅ Database connection successful");
   } catch (err) {
     console.log("🔴 Database connection failed", err);
   }
 }
+
 testDB();
 
 app.listen(port, () => {

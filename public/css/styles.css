@@ -3,28 +3,25 @@
   margin: 0;
   padding: 0;
 }
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: repeating-conic-gradient(#fff 0% 25%, #000 0% 50%) 50% / 80px 80px; 
   color: #222;
   line-height: 1.5;
 }
-
 h1, h2 {
   font-weight: 700;
   text-align: center;
   margin-bottom: 1rem;
 }
-
 /* ======= NAVBAR ======= */
 .nav-bar {
-  background-color: #1b1b2f;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  padding: 0.7rem;
-  position: relative;
+  background-color: #222;
+  color: white;
+  padding: 1rem 2rem;
 }
 
 .nav-links {
@@ -36,57 +33,65 @@ h1, h2 {
 }
 
 .nav-links a {
-  color: white;
+  color: #ddd;
   text-decoration: none;
-  font-weight: 600;
-  padding: 0.4rem 0.8rem;
-  border-radius: 5px;
-  transition: background 0.3s;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
 .nav-links a:hover {
-  background-color: #007bff;
+  color: #ffc107;
+}
+
+.nav-links a.active {
+  color: #ffc107;
+  border-bottom: 2px solid #ffc107;
 }
 
 .account-link {
-  position: absolute;
-  right: 1.5rem;
-  color: #ccc;
-  font-size: 0.9rem;
+  color: #ddd;
   text-decoration: none;
+  font-weight: 600;
 }
 
 .account-link:hover {
-  color: white;
+  color: #ffc107;
 }
 
 /* ======= HERO SECTION ======= */
 .hero {
   background-color: white;
   margin: 2rem auto;
+  padding: 1.5rem ; 
+  max-width: 900px;
+  border-radius: 8px 8px 0 0; 
+  box-shadow: none; 
+}
+.hero h1 {
+  margin-bottom: 1rem;
+}
+.car-promo {
+  background-color: white; 
+  margin: 0 auto; 
   padding: 1.5rem;
   max-width: 900px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.car-promo {
+  border-radius: 0 0 8px 8px; /* Solo bordes inferiores redondeados */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15); /* La sombra va aquí */
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
 }
-
 .car-text {
   text-align: center;
+  color: #00a0c6;
+  font-weight: 900;
 }
-
 .car-title {
   color: #00a0c6;
   font-weight: 700;
   margin-bottom: 0.5rem;
 }
-
 .btn-own {
   background-color: #00a0c6;
   color: white;
@@ -98,12 +103,10 @@ h1, h2 {
   display: inline-block;
   margin-top: 0.5rem;
 }
-
 .btn-own:hover {
   background-color: #007bff;
   transform: scale(1.05);
 }
-
 .car-img {
   width: 100%;
   max-width: 400px;
