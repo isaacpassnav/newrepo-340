@@ -1,7 +1,6 @@
 const { Pool } = require("pg");
 require("dotenv").config();
 
-// Configuración condicional
 const isRender = process.env.RENDER === "true"; 
 
 const pool = new Pool({
