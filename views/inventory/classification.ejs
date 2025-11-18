@@ -1,0 +1,9 @@
+<div class="classification-container">
+  <h1><%= title %></h1>
+  
+  <% if (locals.message) { %>
+    <div class="notice"><%= message %></div>
+  <% } %>
+  
+  <%- grid %>
+</div>

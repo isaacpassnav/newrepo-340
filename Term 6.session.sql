@@ -1,5 +1,6 @@
-
+-- Database Rebuild Script
 -- This script will create all types, tables, and populate them with data
+
 -- Drop existing tables if they exist
 DROP TABLE IF EXISTS public.inventory CASCADE;
 DROP TABLE IF EXISTS public.account CASCADE;
@@ -271,3 +272,8 @@ WHERE inv_make = 'GM' AND inv_model = 'Hummer';
 UPDATE inventory
 SET inv_image = REPLACE(inv_image, '/images/', '/images/vehicles/'),
     inv_thumbnail = REPLACE(inv_thumbnail, '/images/', '/images/vehicles/');
+
+
+
+SELECT * FROM inventory;
+SELECT * FROM classification;
