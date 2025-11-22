@@ -1,14 +1,4 @@
-<% if (messages.success) { %>
-  <div class="flash-message success">
-    <%= messages.success %>
-  </div>
-<% } %>
-
-<% if (messages.error) { %>
-  <div class="flash-message error">
-    <%= messages.error %>
-  </div>
-<% } %>
+<%- messages() %>
 
 <div class="management-container">
   <h1>Vehicle Management</h1>
