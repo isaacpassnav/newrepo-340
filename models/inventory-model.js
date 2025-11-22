@@ -7,9 +7,6 @@ async function getClassifications() {
   return await pool.query("SELECT * FROM public.classification ORDER BY classification_name");
 }
 
-/* ***************************
- *  Get all inventory items and classification_name by classification_id
- * ************************** */
 async function getInventoryByClassificationId(classification_id) {
   try {
     const data = await pool.query(
@@ -25,9 +22,6 @@ async function getInventoryByClassificationId(classification_id) {
   }
 }
 
-/* ***************************
- *  Get specific vehicle by inv_id
- * ************************** */
 async function getInventoryByInvId(inv_id) {
   try {
     const data = await pool.query(
@@ -40,8 +34,29 @@ async function getInventoryByInvId(inv_id) {
   }
 }
 
+async function addClassification(classification_name) {
+  try {
+    const sql = "INSERT INTO classification (classification_name) VALUES ($1) RETURNING *"
+    return await pool.query(sql, [classification_name])
+  } catch (error) {
+    return error.message
+  }
+}
+
+async function checkExistingClassification(classification_name) {
+  try {
+    const sql = "SELECT * FROM classification WHERE classification_name = $1"
+    const result = await pool.query(sql, [classification_name])
+    return result.rowCount
+  } catch (error) {
+    return error.message
+  }
+}
+
 module.exports = { 
   getClassifications, 
   getInventoryByClassificationId, 
-  getInventoryByInvId 
+  getInventoryByInvId,
+  addClassification,
+  checkExistingClassification
 };

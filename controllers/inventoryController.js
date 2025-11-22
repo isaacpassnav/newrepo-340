@@ -46,4 +46,47 @@ invCont.buildByInventoryId = async function (req, res, next) {
   }
 };
 
+invCont.buildManagement = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  const classificationSelect = await utilities.buildClassificationList();
+  console.log("Messages:", req.flash());
+  res.render("inventory/management", {
+    title: "Vehicle Management",
+    nav,
+    errors: null,
+    classificationSelect,
+    messages: req.flash()
+  });
+};
+
+invCont.buildAddClassification = async function (req, res, next) {
+  let nav = await utilities.getNav();
+  res.render("inventory/add-classification", {
+    title: "Add New Classification",
+    nav,
+    errors: null,
+    messages: req.flash()
+  });
+};
+
+invCont.addClassification = async function (req, res) {
+  const { classification_name } = req.body;
+  const addResult = await invModel.addClassification(classification_name);
+
+  if (addResult) {
+    console.log("✅ Setting flash message...");
+    req.flash("success", `The ${classification_name} classification was successfully added.`);
+    console.log("Flash after set:", req.flash());
+    res.redirect("/inv/");
+  } else {
+    req.flash("error", "Sorry, adding the classification failed.");
+    let nav = await utilities.getNav();
+    res.status(501).render("inventory/add-classification", {
+      title: "Add New Classification",
+      nav,
+      errors: null,
+    });
+  }
+};
+
 module.exports = invCont;
