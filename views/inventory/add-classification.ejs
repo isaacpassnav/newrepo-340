@@ -1,4 +1,8 @@
-<%- messages() %>
+<% if (error && error.length > 0) { %>
+  <div class="flash-message error">
+    <%= error %>
+  </div>
+<% } %>
 
 <div class="form-container">
   <h1>Add New Classification</h1>

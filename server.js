@@ -9,41 +9,46 @@ const { notFoundHandler, globalErrorHandler } = require("./middlewares/errorHand
 
 const app = express();
 
-/* ***************
- * Middleware
- *****************/
-// Session store - usar PostgreSQL en producción
+// Session store configuration
+const isProduction = process.env.NODE_ENV === "production";
+
 let sessionStore;
-if (process.env.NODE_ENV === "production") {
+if (isProduction) {
   const pgSession = require('connect-pg-simple')(session);
   sessionStore = new pgSession({
     pool: pool,
     tableName: 'session',
-    createTableIfMissing: true
+    createTableIfMissing: true,
+    pruneSessionInterval: 60 * 15 
   });
+  console.log("✅ Using PostgreSQL session store");
 } else {
   sessionStore = new session.MemoryStore();
+  console.log("✅ Using Memory session store (development)");
 }
 
 app.use(session({
   store: sessionStore,
   secret: process.env.SESSION_SECRET || "supersecretkey123",
-  resave: true,
-  saveUninitialized: true,
+  resave: true, 
+  saveUninitialized: false, 
   name: "sessionId",
   cookie: {
-    secure: process.env.NODE_ENV === "production",
+    secure: process.env.NODE_ENV === "production", 
     httpOnly: true,
-    maxAge: 30 * 24 * 60 * 60 * 1000
-  }
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+    sameSite: 'lax'
+  },
+  rolling: true 
 }));
 
 app.use(require('connect-flash')());
-app.use(function(req, res, next){
-  res.locals.messages = require('express-messages')(req, res);
+app.use((req, res, next) => {
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  res.locals.notice = req.flash('notice');
   next();
 });
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -55,26 +60,19 @@ app.set("views", __dirname + "/views");
 app.use(expressLayouts);
 app.set("layout", "./layouts/main");
 
-/* ***************
- * Static Files
- *****************/
-app.use(staticRoutes);
 
-/* ***************
- * Application Routes
- *****************/
+app.use(staticRoutes);
 app.use(routes);
 
 app.use(notFoundHandler);
 app.use(globalErrorHandler);
-
 
 async function testDB() {
   try {
     const result = await pool.query("SELECT NOW()");
     console.log("✅ Database connection successful");
   } catch (err) {
-    console.error("🔴 Database connection failed:", err.message);
+    console.error("Database connection failed:", err.message);
   }
 }
 
@@ -82,10 +80,11 @@ async function testDB() {
  * Server Start
  *****************/
 const port = process.env.PORT || 3000;
-const host = process.env.NODE_ENV === "production" ? "0.0.0.0" : "localhost";
+const host = isProduction ? "0.0.0.0" : "localhost";
 
 testDB();
 
 app.listen(port, host, () => {
   console.log(`✅ Server running at http://${host}:${port}`);
+  console.log(`✅ Environment: ${process.env.NODE_ENV || 'development'}`);
 });

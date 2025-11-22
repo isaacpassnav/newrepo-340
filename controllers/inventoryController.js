@@ -49,6 +49,7 @@ invCont.buildByInventoryId = async function (req, res, next) {
 invCont.buildManagement = async function (req, res, next) {
   let nav = await utilities.getNav();
   const classificationSelect = await utilities.buildClassificationList();
+  console.log("Messages in management:", req.flash()); // DEBUG
   res.render("inventory/management", {
     title: "Vehicle Management",
     nav,
@@ -72,7 +73,13 @@ invCont.addClassification = async function (req, res) {
   
   if (addResult) {
     req.flash("notice", `Congratulations, the ${classification_name} classification was successfully added.`);
-    res.redirect("/inv/");
+    
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session save error:", err);
+      }
+      res.redirect("/inv/");
+    });
   } else {
     req.flash("notice", "Sorry, the insert failed.");
     res.status(501).redirect("/inv/add-classification");
@@ -122,7 +129,14 @@ invCont.addInventory = async function (req, res) {
 
   if (addResult) {
     req.flash("notice", `Congratulations, the ${inv_make} ${inv_model} was successfully added.`);
-    res.redirect("/inv/");
+    
+    //  FORZAR GUARDAR SESIÓN ANTES DE REDIRIGIR
+    req.session.save((err) => {
+      if (err) {
+        console.error("Session save error:", err);
+      }
+      res.redirect("/inv/");
+    });
   } else {
     req.flash("notice", "Sorry, the insert failed.");
     let classificationSelect = await utilities.buildClassificationList(classification_id);
