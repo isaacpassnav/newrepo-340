@@ -10,7 +10,7 @@ const { notFoundHandler, globalErrorHandler } = require("./middlewares/errorHand
 const app = express();
 
 // Session store configuration
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.RENDER === 'true' || process.env.NODE_ENV === 'production';
 
 let sessionStore;
 if (isProduction) {
@@ -27,17 +27,20 @@ if (isProduction) {
   console.log("✅ Using Memory session store (development)");
 }
 
+
+app.set('trust proxy', 1);
 app.use(session({
   store: sessionStore,
   secret: process.env.SESSION_SECRET || "supersecretkey123",
-  resave: true, 
+  resave: false, 
   saveUninitialized: false, 
   name: "sessionId",
   cookie: {
-    secure: process.env.NODE_ENV === "production", 
+    secure: false, 
     httpOnly: true,
     maxAge: 30 * 24 * 60 * 60 * 1000,
-    sameSite: 'lax'
+    sameSite: 'lax',
+    path: '/'
   },
   rolling: true 
 }));
