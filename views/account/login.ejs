@@ -1,0 +1,62 @@
+<% if (notice && notice.length > 0) { %>
+  <div class="flash-message notice">
+    <%= notice %>
+  </div>
+<% } %>
+
+<div class="form-container">
+  <h1>Login</h1>
+  
+  <% if (errors) { %>
+    <ul class="error-list">
+      <% errors.array().forEach(error => { %>
+        <li><%= error.msg %></li>
+      <% }) %>
+    </ul>
+  <% } %>
+
+  <form id="loginForm" action="/account/login" method="post">
+    <div class="form-group">
+      <label for="account_email">Email: <span class="required">*</span></label>
+      <input 
+        type="email" 
+        id="account_email" 
+        name="account_email" 
+        required
+        value="<%= locals.account_email ? account_email : '' %>"
+        placeholder="Enter your email"
+      >
+    </div>
+
+    <div class="form-group">
+      <label for="account_password">Password: <span class="required">*</span></label>
+      <input 
+        type="password" 
+        id="account_password" 
+        name="account_password" 
+        required
+        pattern=".{12,}"
+        title="Password must be at least 12 characters"
+        placeholder="Enter your password"
+      >
+      <button type="button" id="showPassword" class="show-password-btn">Show Password</button>
+    </div>
+
+    <button type="submit" class="btn-submit">Login</button>
+    
+    <p class="text-center">
+      No account? <a href="/account/register">Sign up</a>
+    </p>
+  </form>
+</div>
+
+<script>
+  const passwordInput = document.getElementById("account_password");
+  const showPasswordBtn = document.getElementById("showPassword");
+  
+  showPasswordBtn.addEventListener("click", function() {
+    const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+    passwordInput.setAttribute("type", type);
+    this.textContent = type === "password" ? "Show Password" : "Hide Password";
+  });
+</script>

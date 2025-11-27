@@ -2,10 +2,13 @@ const express = require("express");
 require("dotenv").config();
 const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const pool = require("./database/db");
 const staticRoutes = require("./routes/static");
 const routes = require("./routes/index");
 const { notFoundHandler, globalErrorHandler } = require("./middlewares/errorHandler");
+const utilities = require("./utilities/");
+const { cookie } = require("express-validator");
 
 const app = express();
 
@@ -44,6 +47,8 @@ app.use(session({
   },
   rolling: true 
 }));
+app.use(cookieParser());
+app.use(utilities.checkJWTToken)
 
 app.use(require('connect-flash')());
 app.use((req, res, next) => {

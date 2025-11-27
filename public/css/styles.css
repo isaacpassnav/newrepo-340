@@ -649,16 +649,88 @@ h1, h2 {
   background-color: white;
   cursor: pointer;
 }
-
 #classificationList:focus {
   outline: none;
   border-color: #0066cc;
 }
-
 /* Input number  */
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   opacity: 1;
+}
+/* ===== ACCOUNT VIEWS ===== */
+.account-management-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.account-management-container h1 {
+  color: #222;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.welcome-message {
+  background: linear-gradient(135deg, #0066cc 0%, #0052a3 100%);
+  color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+.welcome-message h2 {
+  margin-bottom: 1rem;
+  font-size: 1.8rem;
+}
+.welcome-message p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+.account-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+.btn-secondary {
+  background-color: #6c757d;
+}
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+.show-password-btn {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+.show-password-btn:hover {
+  background: #5a6268;
+}
+.text-center {
+  text-align: center;
+  margin-top: 1rem;
+}
+.text-center a {
+  color: #0066cc;
+  text-decoration: none;
+  font-weight: 600;
+}
+.text-center a:hover {
+  text-decoration: underline;
+}
+@media screen and (max-width: 768px) {
+  .account-management-container {
+    margin: 1rem;
+    padding: 1.5rem;
+  }
 }
 /* ===== FOOTER ===== */
 footer {

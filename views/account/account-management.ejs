@@ -1,0 +1,23 @@
+<% if(notice && notice.length > 0) { %>
+    <div class="flash-message notice">
+      <%= notice %>
+  </div>
+<% } %>
+<div class="account-management-container">
+  <h1>Account Management</h1>
+  
+  <% if (locals.accountData) { %>
+    <div class="welcome-message">
+      <h2>Welcome, <%= accountData.account_firstname %> <%= accountData.account_lastname %>!</h2>
+      <p>Email: <%= accountData.account_email %></p>
+      <p>Account Type: <%= accountData.account_type %></p>
+    </div>
+  <% } else { %>
+    <p>You're logged in</p>
+  <% } %>
+
+  <div class="account-actions">
+    <a href="/account/update" class="btn-action">Update Account Information</a>
+    <a href="/account/logout" class="btn-action btn-secondary">Logout</a>
+  </div>
+</div>
