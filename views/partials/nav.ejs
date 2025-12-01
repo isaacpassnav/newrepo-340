@@ -1,4 +1,24 @@
 <nav class="nav-bar">
   <%- nav %>
-  <a href="/account/login" class="account-link">My Account</a>
+  
+  <% if (locals.loggedin) { %>
+    <div class="account-dropdown">
+      <button class="account-link dropdown-toggle" id="accountDropdown">
+        Welcome <%= accountData.account_firstname %>
+        <i class="bi bi-chevron-down"></i>
+      </button>
+      <div class="dropdown-menu" id="dropdownMenu">
+        <a href="/account/" class="dropdown-item">Account Management</a>
+        <a href="/account/update" class="dropdown-item">Update Account</a>
+        <% if (accountData.account_type === 'Employee' || accountData.account_type === 'Admin') { %>
+          <hr class="dropdown-divider">
+          <a href="/inv/" class="dropdown-item">Inventory Management</a>
+        <% } %>
+        <hr class="dropdown-divider">
+        <a href="/account/logout" class="dropdown-item logout">Logout</a>
+      </div>
+    </div>
+  <% } else { %>
+    <a href="/account/login" class="account-link">My Account</a>
+  <% } %>
 </nav>

@@ -48,6 +48,7 @@ app.use(session({
   rolling: true 
 }));
 app.use(cookieParser());
+
 app.use(utilities.checkJWTToken)
 
 app.use(require('connect-flash')());
