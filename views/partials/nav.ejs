@@ -10,6 +10,7 @@
       <div class="dropdown-menu" id="dropdownMenu">
         <a href="/account/" class="dropdown-item">Account Management</a>
         <a href="/account/update" class="dropdown-item">Update Account</a>
+        <a href="/favorites/" class="dropdown-item"><i class="bi bi-heart-fill"></i> My Favorites</a> <!-- 👈 NUEVO -->
         <% if (accountData.account_type === 'Employee' || accountData.account_type === 'Admin') { %>
           <hr class="dropdown-divider">
           <a href="/inv/" class="dropdown-item">Inventory Management</a>

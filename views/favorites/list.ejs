@@ -1,0 +1,11 @@
+<% if (notice && notice.length > 0) { %>
+  <div class="flash-message notice">
+    <%= notice %>
+  </div>
+<% } %>
+
+<div class="favorites-container">
+  <h1><%= title %></h1>
+  
+  <%- favoritesGrid %>
+</div>

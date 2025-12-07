@@ -74,7 +74,7 @@ Util.buildClassificationList = async function (classification_id = null) {
 /* **************************************
 * Build the detail view HTML
 * ************************************ */
-Util.buildDetailView = function(vehicle) {
+Util.buildDetailView = function(vehicle, isFavorite = false, accountData = null) {
   let detail = '<div class="vehicle-detail">';
   
   detail += '<div class="vehicle-image">';
@@ -91,10 +91,55 @@ Util.buildDetailView = function(vehicle) {
   detail += '<p><strong>Miles:</strong> ' + new Intl.NumberFormat('en-US').format(vehicle.inv_miles) + '</p>';
   detail += '<p><strong>Year:</strong> ' + vehicle.inv_year + '</p>';
   
+  // Add to Favorites button (only if logged in)
+  if (accountData) {
+    if (!isFavorite) {
+      detail += '<form action="/favorites/add" method="post" class="favorites-form">';
+      detail += '<input type="hidden" name="inv_id" value="' + vehicle.inv_id + '">';
+      detail += '<button type="submit" class="btn-add-favorite"><i class="bi bi-heart"></i> Add to Favorites</button>';
+      detail += '</form>';
+    } else {
+      detail += '<p class="already-favorite"><i class="bi bi-heart-fill"></i> Already in your favorites</p>';
+    }
+  }
+  
   detail += '</div>';
   detail += '</div>';
   
   return detail;
+};
+/* **************************************
+* Build the favorites grid HTML
+* ************************************ */
+Util.buildFavoritesGrid = async function(favorites){
+  let grid;
+  if(favorites.length > 0){
+    grid = '<ul id="fav-display">';
+    favorites.forEach(vehicle => { 
+      grid += '<li>';
+      grid += '<a href="../../inv/detail/'+ vehicle.inv_id 
+      + '" title="View ' + vehicle.inv_make + ' '+ vehicle.inv_model 
+      + ' details"><img src="' + vehicle.inv_thumbnail 
+      +'" alt="Image of '+ vehicle.inv_make + ' ' + vehicle.inv_model 
+      +' on CSE Motors"></a>';
+      grid += '<div class="namePrice">';
+      grid += '<hr>';
+      grid += '<h2>';
+      grid += '<a href="../../inv/detail/' + vehicle.inv_id +'" title="View ' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + ' details">' 
+      + vehicle.inv_make + ' ' + vehicle.inv_model + '</a>';
+      grid += '</h2>';
+      grid += '<span>$' 
+      + new Intl.NumberFormat('en-US').format(vehicle.inv_price) + '</span>';
+      grid += '</div>';
+      grid += '<a href="/favorites/remove/' + vehicle.favorite_id + '" class="btn-remove-fav" onclick="return confirm(\'Remove from favorites?\')">Remove</a>';
+      grid += '</li>';
+    });
+    grid += '</ul>';
+  } else { 
+    grid += '<p class="notice">You have no favorite vehicles yet.</p>';
+  }
+  return grid;
 };
 
 Util.handleErrors = fn => (req, res, next) => Promise.resolve(fn(req, res, next)).catch(next);
