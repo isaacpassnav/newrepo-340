@@ -9,6 +9,7 @@ const routes = require("./routes/index");
 const { notFoundHandler, globalErrorHandler } = require("./middlewares/errorHandler");
 const utilities = require("./utilities/");
 const { cookie } = require("express-validator");
+const messages = require("express-messages");
 
 const app = express();
 
@@ -56,6 +57,10 @@ app.use((req, res, next) => {
   res.locals.success = req.flash('success');
   res.locals.error = req.flash('error');
   res.locals.notice = req.flash('notice');
+  next();
+});
+app.use(function (req, res, next) {
+  res.locals.messages = messages(req, res);
   next();
 });
 app.use(express.json());
